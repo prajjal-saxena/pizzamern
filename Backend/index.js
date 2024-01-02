@@ -1,12 +1,18 @@
-const dbConnect = require('./mongodb')
-const express = require('express')
+const express = require('express');
+const con = require("./config");
 
-const app = express()
+const app = express();
+app.use(express.json());
 
-app.get('/', async(req, res) => {
-    let data = await dbConnect()
-    data = await data.find().toArray()
-    res.send(data)
+app.get('/', (req, res) => {
+    con.query("select * from foodcategory", (err, result) => {
+        if(err){
+            res.send("error")
+        }
+        else{
+            res.send(result)
+        }
+    })
 })
 
-app.listen(5000) 
+app.listen(5000)
